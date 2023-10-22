@@ -19,8 +19,8 @@
   };                                                                           \
                                                                                \
   void DL_TREE_FUNC_NAME(type, nchildren, _print)(                             \
-      DLTree(type) * node, void (*print)(type * data)) {                       \
-    print(&node->data);                                                        \
+      DLTree(type) * node, void (*print)(DLTree(type) *)) {                    \
+    print(node);                                                               \
     for (size_t i = 0; i < nchildren; ++i) {                                   \
       if (node->children[i]) {                                                 \
         DL_TREE_FUNC_NAME(type, nchildren, _print)(node->children[i], print);  \
