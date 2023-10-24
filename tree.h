@@ -144,9 +144,11 @@
   DLTree(type) * DL_TREE_FUNC_NAME(type, nchildren, _walk_until)(              \
                      DLTree(type) * node, bool (*predicate)(DLTree(type) *)) { \
     DLTree(type) *current = node->parent;                                      \
-    while (node->parent != NULL) {                                             \
-      if (predicate(current))                                                  \
+    while (current != NULL) {                                             \
+      if (predicate(current)) {                                                \
         return current;                                                        \
+      }                                                                        \
+      current = current->parent;                                               \
     }                                                                          \
                                                                                \
     return NULL;                                                               \
