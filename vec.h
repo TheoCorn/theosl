@@ -144,11 +144,4 @@
     putc('\n', stdout);                                                        \
   }
 
-// void vec_##type##_print(Vec(type) *vec) { \
-  //   \
-  // }
-
-// #define VEC_FOR_EACH(type, vec, code) \
-//   for (size_t i = 0; i < vec->len; ++i) { \
-//     type element = \
-//   }
+#define VEC_FOR_EACH(type, vec) for (type* it = vec->data; i < vec->data + vec->len; ++i) 

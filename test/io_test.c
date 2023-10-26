@@ -9,8 +9,5 @@ int main() {
     printf("iscan error\n");
   }
   
-  for (size_t i = 0; i < iv.len; ++i) {
-    printf("%d ", iv.data[i]);
-  }
-  putc('\n', stdout);
+  vec_int_print(&iv, STDOUT_PRINTER(int, "%d"));
 }
