@@ -1,21 +1,31 @@
-#define lambda(lambda$_ret, lambda$_args, lambda$_body)                        \
-  ({                                                                           \
-    lambda$_ret lambda$__anon$ lambda$_args\
-lambda$_body &amp;                                                             \
-    lambda$__anon$;                                                            \
-  })
+#include <stddef.h>
+#include <stdint.h>
+
+// #define lambda(lambda$_ret, lambda$_args, lambda$_body)                        \
+//   ({                                                                           \
+//     lambda$_ret lambda$__anon$ lambda$_args\
+// lambda$_body &amp;                                                             \
+//     lambda$__anon$;                                                            \
+//   })
 
 #define loop while (1)
 #define repeat(n) for (size_t __i = 0; __i < n; ++__i)
 
-#define class(name, classes)                                                   \
+// taged union / rust style enum / kotlin sealed class
+#define CLASS(name, classes)                                                   \
   struct name##_class {                                                        \
-    classes                                                                    \
+    size_t type;                                                               \
+    union {                                                                    \
+      classes                                                                  \
+    } data;                                                                    \
   };
 
-#define IF(block, condition, do)                                               \
+// stateful if
+// usee for creating a go style
+#define SIF(block, condition, do)                                              \
   {                                                                            \
     block if (condition) { do }                                                \
   }
 
-//
+#define Result(left, right) CLASS(result_##left##_##right##_t, left; right;)
+
