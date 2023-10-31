@@ -115,7 +115,7 @@
     type *max = vec->data;                                                     \
     for (size_t i = 1; i < vec->len; ++i) {                                    \
       type *b = vec->data + i;                                                 \
-      if (cmp(max, b) < 0) {                                                  \
+      if (cmp(max, b) < 0) {                                                   \
         max = b;                                                               \
       }                                                                        \
     }                                                                          \
@@ -142,6 +142,17 @@
       print(vec->data + i);                                                    \
     }                                                                          \
     putc('\n', stdout);                                                        \
-  }
+  }                                                                            \
+                                                                               \
+  type vec_##type##_pop_back(Vec(type) * vec) {                                \
+    return vec->data[--vec->len];                                              \
+  }                                                                            \
+                                                                               \
+  type *vec_##type##_last(Vec(type) * vec) {                                   \
+    return vec->data + vec->len - 1;                                           \
+  }                                                                            \
+                                                                               \
+  type *vec_##type##_first(Vec(type) * vec) { return vec->data; }
 
-#define VEC_FOR_EACH(type, vec) for (type* it = vec->data; i < vec->data + vec->len; ++i) 
+#define VEC_FOR_EACH(type, vec)                                                \
+  for (type *it = vec->data; i < vec->data + vec->len; ++i)

@@ -28,4 +28,5 @@
   }
 
 #define Result(left, right) CLASS(result_##left##_##right##_t, left; right;)
+#define Maybe(type) CLASS(maybe_##type##_t, type;)
 
