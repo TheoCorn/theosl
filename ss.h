@@ -71,3 +71,6 @@ lambda$_body &amp;                                                             \
 
 // indicates that a pointer is not null
 #define ref(type_t) type_t*
+
+// enable using char* in collections
+typedef char* str;

@@ -17,4 +17,14 @@ DEF_CMP_NUM(long)
 DEF_CMP_NUM(double)
 DEF_CMP_NUM(float)
 
+
+/**
+  Comperes the 
+  @param arg expexts a string that is the ground thuth
+  @param str the string to check 
+*/
+bool eq_str(void* arg, const char* str) {
+  return !strcmp((char*) arg, str);
+}
+
 #endif
