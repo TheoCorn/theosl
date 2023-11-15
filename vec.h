@@ -154,5 +154,11 @@
                                                                                \
   type *vec_##type##_first(Vec(type) * vec) { return vec->data; }
 
+/**
+  creates `for it in vec` loop where `it` is a type*
+*/
 #define VEC_FOR_EACH(type, vec)                                                \
-  for (type *it = vec->data; i < vec->data + vec->len; ++i)
+  for (type *it = vec.data; it < vec.data + vec.len; ++it)
+
+#define VECP_FOR_EACH(type, vecp)                                              \
+  for (type *it = vecp->data; it < vecp->data + vecp->len; ++it)

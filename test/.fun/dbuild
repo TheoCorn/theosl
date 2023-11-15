@@ -1,0 +1,8 @@
+#! /bin/env fish
+
+set cfile $argv[1]
+
+set fname $(echo $cfile | sd '\.c' '$1')
+gcc --pedantic -Werror -O3 -std=c2x -g $cfile -o "build/$fname"
+echo "compiled $cfile to build/$fname" 
+

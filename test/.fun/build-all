@@ -1,0 +1,6 @@
+#! /bin/env fish
+
+echo "building all recepies" 
+for file in $(fselect name from . where ext === 'c')
+	fun build $file
+end

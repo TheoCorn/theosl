@@ -175,42 +175,42 @@ DEF_VEC(size_t)
     lch_index->len--;                                                          \
     return false;                                                              \
   }                                                                            \
-                                                                               \
-  DLTree(type) * DL_TREE_FUNC_NAME(type, nchildren, _dfs)(                     \
-                     DLTree(type) * node, bool (*predicate)(DLTree(type) *)) { \
-    Vec(size_t) indexes;                                                       \
-    vec_size_t_init(&indexes);                                                 \
-                                                                               \
-    DLTree(type) *current = node;                                              \
-    bool current_indexed = false;                                              \
-    loop {                                                                     \
-      if (predicate(current)) {                                                \
-        return current;                                                        \
-      }                                                                        \
-      size_t i = 0;                                                            \
-      for (; i < nchildren; ++i) {                                             \
-        if (indexes.data[i]) {                                                    \
-          if (current_indexed) {                                               \
-            *vec_size_t_last(&indexes) = i;                                    \
-          } else {                                                             \
-            vec_size_t_rappend(&indexes, i);                                   \
-          }                                                                    \
-          current = indexes.data[i];                                              \
-          current_indexed = false;                                             \
-        }                                                                      \
-      }                                                                        \
-                                                                               \
-      if (i == nchildren) {                                                    \
-        current = DL_TREE_FUNC_NAME(type, nchildren, _walk_up_until)(          \
-            current, has_aditional_children, (void *)&indexes);                \
-        if (current == NULL) {                                                 \
-          return NULL;                                                         \
-        }                                                                      \
-      }                                                                        \
-    }                                                                          \
-                                                                               \
-    vec_size_t_free(&indexes);                                                 \
-  }
+                                                                               
+  // DLTree(type) * DL_TREE_FUNC_NAME(type, nchildren, _dfs)(                     \
+  //                    DLTree(type) * node, bool (*predicate)(DLTree(type) *)) { \
+  //   Vec(size_t) indexes;                                                       \
+  //   vec_size_t_init(&indexes);                                                 \
+  //                                                                              \
+  //   DLTree(type) *current = node;                                              \
+  //   bool current_indexed = false;                                              \
+  //   loop {                                                                     \
+  //     if (predicate(current)) {                                                \
+  //       return current;                                                        \
+  //     }                                                                        \
+  //     size_t i = 0;                                                            \
+  //     for (; i < nchildren; ++i) {                                             \
+  //       if (indexes.data[i]) {                                                    \
+  //         if (current_indexed) {                                               \
+  //           *vec_size_t_last(&indexes) = i;                                    \
+  //         } else {                                                             \
+  //           vec_size_t_rappend(&indexes, i);                                   \
+  //         }                                                                    \
+  //         current = indexes.data[i];                                              \
+  //         current_indexed = false;                                             \
+  //       }                                                                      \
+  //     }                                                                        \
+  //                                                                              \
+  //     if (i == nchildren) {                                                    \
+  //       current = DL_TREE_FUNC_NAME(type, nchildren, _walk_up_until)(          \
+  //           current, has_aditional_children, (void *)&indexes);                \
+  //       if (current == NULL) {                                                 \
+  //         return NULL;                                                         \
+  //       }                                                                      \
+  //     }                                                                        \
+  //   }                                                                          \
+  //                                                                              \
+  //   vec_size_t_free(&indexes);                                                 \
+  // }
 
 #define DEF_DL_TREE_DROP(type, nchildren, drop_fun)                            \
   int DL_TREE_FUNC_NAME(type, nchildren, _drop_node)(DLTree(type) * node) {    \

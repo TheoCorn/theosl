@@ -74,3 +74,4 @@ lambda$_body &amp;                                                             \
 
 // enable using char* in collections
 typedef char* str;
+
