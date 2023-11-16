@@ -99,7 +99,79 @@
     return vec___ghash_map_entry_##key_t##_##value_t##_find(                   \
         ghm->buckets + bucket,                                                 \
         _ghash_map_entry_##key_t##_##value_t##_find_by_key, (void *)key);      \
-  } 
+  }                                                                            \
+                                                                               \
+  void GHASH_MAP_FUNC_NAME(key_t, value_t, nbuckets,                           \
+                           upsert)(GHashMap(key_t, value_t, nbuckets) * ghm,   \
+                                   key_t * key, value_t * value) {             \
+    size_t bucket = ghm->hash_f(key) % nbuckets;                               \
+                                                                               \
+    GHashMapEntry(key_t, value_t) *current =                                   \
+        vec___ghash_map_entry_##key_t##_##value_t##_find(                      \
+            ghm->buckets + bucket,                                             \
+            _ghash_map_entry_##key_t##_##value_t##_find_by_key, (void *)key);  \
+                                                                               \
+    if (current) {                                                             \
+      current->value = *value;                                                 \
+    } else {                                                                   \
+      vec_##__ghash_map_entry_##key_t##_##value_t##_rappend(                   \
+          ghm->buckets + bucket,                                               \
+          (__ghash_map_entry_##key_t##_##value_t){*key, *value});              \
+    }                                                                          \
+  }                                                                            \
+                                                                               \
+  void GHASH_MAP_FUNC_NAME(key_t, value_t, nbuckets, mutsert)(                 \
+      GHashMap(key_t, value_t, nbuckets) * ghm, key_t * key, value_t * value,  \
+      void (*mutator)(void *, __ghash_map_entry_##key_t##_##value_t *),        \
+      void *mutator_arg) {                                                     \
+    size_t bucket = ghm->hash_f(key) % nbuckets;                               \
+                                                                               \
+    GHashMapEntry(key_t, value_t) *current =                                   \
+        vec___ghash_map_entry_##key_t##_##value_t##_find(                      \
+            ghm->buckets + bucket,                                             \
+            _ghash_map_entry_##key_t##_##value_t##_find_by_key, (void *)key);  \
+                                                                               \
+    if (current) {                                                             \
+      mutator(mutator_arg, current);                                           \
+    } else {                                                                   \
+      vec_##__ghash_map_entry_##key_t##_##value_t##_rappend(                   \
+          ghm->buckets + bucket,                                               \
+          (__ghash_map_entry_##key_t##_##value_t){*key, *value});              \
+    }                                                                          \
+  }                                                                            \
+                                                                               
+  // Vec(__ghash_map_entry_##key_t##_##value_t##)                                 \
+  //     GHASH_MAP_FUNC_NAME(key_t, value_t, nbuckets,                            \
+  //                         to_vec)(GHashMap(key_t, value_t, nbuckets) * ghm) {  \
+  //   struct vec___ghash_map_entry_##key_t##_##value_t##_t vec;                  \
+  //   vec___ghash_map_entry_##key_t##_##value_t##_init(&vec);                    \
+  //   for (Vec(__ghash_map_entry_##key_t##_##value_t) *__bucket__ =              \
+  //            ghm->buckets;                                                     \
+  //        __bucket__ < ghm->buckets + nbuckets; ++__bucket__)                   \
+  //     VECP_FOR_EACH(__ghash_map_entry_##key_t##_##value_t, __bucket__) {       \
+  //       vec___ghash_map_entry_##key_t##_##value_t##_append(&vec, it);          \
+  //     }                                                                        \
+  //                                                                              \
+  //   return vec;                                                                \
+  // }
+
+// Vec(__ghash_map_entry_##key_t##_##value_t)                                   \
+  //     GHASH_MAP_FUNC_NAME(key_t, value_t, nbuckets,                            \
+  //                         to_vec)(GHashMap(key_t, value_t, nbuckets) * ghm) {  \
+  //   struct vec___ghash_map_entry_##key_t##_##value_t##_t vec;                         \
+  //   vec___ghash_map_entry_##key_t##_##value_t##_init(&vec);                    \
+  //   for (struct vec___ghash_map_entry_##key_t##_##value_t##_t *__bucket__ =           \
+  //            ghm->buckets;                                                     \
+  //        __bucket__ < ghm->buckets + nbuckets; ++__bucket__)                   \
+  //     VECP_FOR_EACH(_ghash_map_entry_##key_t##_##value_t##_t, __bucket__) {   \
+  //       vec___ghash_map_entry_##key_t##_##value_t##_rappend(it);               \
+  //     }                                                                        \
+  // }
+
+#define GHASHMAP_FOR_EACH(entry_t, mpt, nbuckets)                              \
+  for (Vec(entry_t) *__bucket__ = mpt->buckets;                                \
+       __bucket__ < mpt->buckets + nbuckets; ++__bucket__)                     \
+  VECP_FOR_EACH(entry_t, __bucket__)
 
 /*#define HashMap(key_t, value_t, hfn) struct
 hash_map_##key_t##_##value_t##_##hfn

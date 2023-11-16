@@ -49,7 +49,7 @@ int main() {
   MAP_FUN(insert)(&map, &k1, &v1);
 
   for (size_t i = 0; i < 10; ++i) {
-    VEC_FOR_EACH(__ghash_map_entery_str_size_t, (map.buckets[i])) {
+    VEC_FOR_EACH(__ghash_map_entry_str_size_t, (map.buckets[i])) {
       printf("%s : %zu\n", it->key, it->value);
     }
   }
