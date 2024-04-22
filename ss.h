@@ -43,9 +43,13 @@ lambda$_body &amp;                                                             \
     }                                                                          \
   }
 
-#define Either(left_t, right_t) either_##left_t##_##right_t##_t
+#define EITHER_NAME(left_t, right_t) struct either_##left_t##_##right_t##_t
+#define EITHER(left_t, right_t) either_##left_t##_##right_t##_t
 #define DEF_Either(left_t, right_t)                                            \
-  _DEF_CLASS_STRICTNAME(Either(left_t, right_t), left_t left; right_t right;)
+  _DEF_CLASS_STRICTNAME(EITHER_NAME(left_t, right_t), left_t left;             \
+                        right_t right;)                                        \
+                                                                               \
+  bool either_is_left(Either(left_t, right_t) e) { return e.type == 0; }
 
 #define RESULT_NAME(ok_t, err_t) result_##ok_t##_##err_t##_t
 #define Result(ok_t, err_t) struct RESULT_NAME(ok_t, err_t)
@@ -56,7 +60,7 @@ lambda$_body &amp;                                                             \
 #define RESULT_ERR 1
 
 /*
-  Maybe / Option is often worse than using pointers and checking if null, 
+  Maybe / Option is often worse than using pointers and checking if null,
   though if you need pass by value for some reason consider it
 */
 #define Maybe(type_t) struct maybe_##type_t_t
@@ -68,10 +72,9 @@ lambda$_body &amp;                                                             \
 #define Option(type_t) Maybe(type_t)
 #define DEF_OPTION(type_t) DEF_MAYBE(type_t)
 
-
 // indicates that a pointer is not null
-#define ref(type_t) type_t*
+#define ref(type_t) type_t *
 
 // enable using char* in collections
-typedef char* str;
-
+// typedef char* str;
+typedef char *str_t;

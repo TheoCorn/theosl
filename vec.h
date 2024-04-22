@@ -53,7 +53,7 @@
   }                                                                            \
                                                                                \
   int vec_##type##_extend(struct vec_##type##_t *vec) {                        \
-    return vec_##type##_extend_by(vec, vec->len / 2);                          \
+    return vec_##type##_extend_by(vec, 5 + (vec->len / 2));                          \
   }                                                                            \
                                                                                \
   type *vec_##type##_uninit_append(struct vec_##type##_t *vec) {               \
